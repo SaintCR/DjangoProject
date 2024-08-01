@@ -1,0 +1,30 @@
+{% load static %}
+{% include 'Inc/header.html' %}
+
+<div class="ui container">
+    <h1 class="centrartitulo">Listado de cargos</h1>
+    <table class="ui basic table">
+        <thead>
+          <tr>
+            <th>Nombre del cargo</th>
+            <th>Descripcion del cargo</th>
+            <th>Descuento</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for c in cargos %}
+            <tr>
+                <td>{{ c.1 }}</td>
+                <td>{{ c.2 }}</td>
+                <td>{{ c.3 }}%</td>
+                <td>
+                    <a href="/Cargo/actualizar/{{ c.0 }}"><i class="pencil alternate icon"></i></a>
+                    <a href="/Cargo/borrar/{{ c.0 }}"><i class="trash icon"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+</div>
+

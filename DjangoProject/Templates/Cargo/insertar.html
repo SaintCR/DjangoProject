@@ -1,0 +1,27 @@
+{% include 'Inc/header.html' %} 
+
+<div class="ui container">
+    <h1 class="centrartitulo">Formulario de cargo</h1> 
+    <form action="" method="post" class="ui form">
+        {% csrf_token %}
+        <div class="three fields">
+            <div class="four field">
+                <label for="">Nombres:</label>
+                <input type="text" name="nombre" id="nombre" required>
+            </div>
+            <div class="field">
+                <label for="">Descripcion:</label>
+                <input type="text" name="descripcion" id="descripcion" required>
+            </div>
+            <div class="field">
+                <label for="">Descuento:</label>
+                <input type="number" name="descuento" id="descuento" required>
+            </div>
+        </div>
+         <div class="centrarboton">
+             <button type="submit" class="ui inverted green button">Guardar Cargo</button>
+         </div>
+    </form>
+</div>
+
+{% include 'Inc/footer.html' %} 

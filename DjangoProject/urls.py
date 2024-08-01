@@ -24,4 +24,10 @@ urlpatterns = [
 
     #HOME
     path('', views.home),
+
+    #CRUD CARGO
+    path('Cargo/insertar', views.cargoinsertar),
+    path('Cargo/listado', views.cargolistado),
+    path('Cargo/borrar/<int:idcargo>', views.cargoborrar),
+    path('Cargo/actualizar/<int:idcargo>', views.cargoactualizar),
 ]
