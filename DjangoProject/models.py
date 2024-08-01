@@ -16,3 +16,12 @@ class Clientes(models.Model):
     cargo = models.ForeignKey(Cargo,on_delete=models.CASCADE)
     class Meta:
         db_table= 'clientes'
+
+class Producto(models.Model):
+    nombre = models.CharField(max_length=255)
+    descripcion = models.CharField(max_length=255)
+    precio = models.BigIntegerField()
+    cantidad = models.BigIntegerField()
+    foto_url = models.CharField(max_length=255)
+    class Meta:
+        db_table = 'producto'  

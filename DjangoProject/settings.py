@@ -125,6 +125,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+MEDIA_ROOT = 'DjangoProject/Public/Img/Productos'
+
+
 STATICFILES_DIRS= [
     'DjangoProject/Public'
 ]

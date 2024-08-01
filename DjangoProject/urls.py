@@ -38,4 +38,11 @@ urlpatterns = [
     path('Cargo/borrar/<int:idcargo>', views.cargoborrar),
     path('Cargo/actualizar/<int:idcargo>', views.cargoactualizar),
     #FIN CRUD CARGO
+
+    #CRUD PRODUCTOS
+    path('Producto/insertar/', views.insertarproducto),
+    path('Producto/listado/', views.listadoproducto),
+    path('Producto/actualizar/<int:id>', views.productoactualizar),
+    path('Producto/borrar/<int:id>', views.borrarproducto),
+    #FIN PRODUCTOS
 ]

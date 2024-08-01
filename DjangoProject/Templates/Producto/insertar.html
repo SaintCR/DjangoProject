@@ -1,0 +1,37 @@
+{% include 'Inc/header.html' %} 
+
+<div class="ui container">
+    <h1 class="centrartitulo">Formulario de Registro Producto</h1> 
+    <form action="" method="post" class="ui form" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="two fields">
+            <div class="four field">
+                <label for="">Nombre del Producto:</label>
+                <input type="text" name="nombre" id="nombre" required>
+            </div>
+            <div class="field">
+                <label for="">Descripcion:</label>
+                <input type="text" name="descripcion" id="descripcion" required>
+            </div>
+        </div>
+        <div class="three fields">
+            <div class="field">
+                <label for="">Precio:</label>
+                <input type="number" name="precio" id="precio" required>
+            </div>
+            <div class="field">
+                <label for="">Cantidad del producto:</label>
+                <input type="number" name="cantidad" id="cantidad" required>
+            </div>
+            <div class="field">
+                <label for="">Foto del producto:</label>
+                <input type="file" name="foto_url" id="foto_url" required>
+            </div>
+        </div>
+         <div class="centrarboton">
+             <button type="submit" class="ui inverted green button">Guardar Producto</button>
+         </div>
+    </form>
+</div>
+
+{% include 'Inc/footer.html' %} 

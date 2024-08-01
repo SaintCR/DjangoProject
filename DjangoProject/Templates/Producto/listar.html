@@ -1,0 +1,32 @@
+{% load static %}
+{% include 'Inc/header.html' %}
+
+<div class="ui container">
+    <h1 class="centrartitulo">Listado de Productos</h1>
+    <div class="ui link cards">
+        {% for p in productos %}
+        <div class="card">
+          <div class="image">
+            <img src="{% static 'Img/Productos/' %}{{p.foto_url}}">
+          </div>
+          <div class="content">
+            <div class="header">{{ p.nombre }}</div>
+            <div class="description">
+                {{ p.descripcion }}
+                <br><br>
+                Cantidad: {{ p.cantidad }}
+            </div>
+          </div>
+          <div class="extra content">
+            <span class="right floated">
+                <a href="/Producto/actualizar/{{ p.id }}"><i class="edit icon"></i></a>
+                <a href="/Producto/borrar/{{ p.id }}"><i class="trash icon"></i></a>
+            </span>
+            <span>
+              <i class="dollar sign icon"></i>
+              {{ p.precio }}
+            </span>
+          </div>
+        </div>
+    {% endfor %}
+</div>

@@ -1,7 +1,11 @@
 from django.db import connection
 from django.shortcuts import redirect, render
+from django.core.serializers import serialize
+from django.core.files.storage import FileSystemStorage
+from django.http import HttpResponse
 
-from DjangoProject.models import Cargo, Clientes
+
+from DjangoProject.models import Cargo, Clientes, Producto
 
 
 def home(request):
@@ -102,3 +106,57 @@ def cargoactualizar(request,idcargo):
 
 #endregion
 
+#region PRODUCTOS
+
+def insertarproducto(request):
+    if request.method == "POST":
+        if request.POST.get('nombre') and request.POST.get('descripcion') and request.POST.get('precio') and request.POST.get('cantidad'):
+            productos = Producto()
+            productos.nombre = request.POST.get('nombre')
+            productos.descripcion = request.POST.get('descripcion')
+            productos.precio = request.POST.get('precio')    
+            productos.cantidad = request.POST.get('cantidad')
+            productos.foto_url = request.FILES['foto_url']
+            imagen = FileSystemStorage()
+            imagen.save(productos.foto_url.name,productos.foto_url)
+            productos.save()
+            return redirect('/Producto/listado')
+    return render(request, 'Producto/insertar.html')
+
+def listadoproducto(request):
+    productos= Producto.objects.all()
+    return render(request, 'Producto/listar.html', {'productos': productos})
+
+def productoactualizar(request, id):
+    if request.method == "POST":
+        nombre = request.POST.get('nombre')
+        descripcion = request.POST.get('descripcion')
+        precio = request.POST.get('precio')
+        cantidad = request.POST.get('cantidad')
+        foto_url = request.FILES.get('foto_url')
+        
+        if nombre and descripcion and precio and cantidad:
+            productos = Producto.objects.get(id=id)
+            productos.nombre = nombre
+            productos.descripcion = descripcion
+            productos.precio = precio
+            productos.cantidad = cantidad
+            
+            if foto_url:
+                imagen = FileSystemStorage()
+                filename = imagen.save(foto_url.name, foto_url)
+                productos.foto_url = filename
+            
+            productos.save()
+            return redirect('/Producto/listado/')
+    
+    else:
+        productos = Producto.objects.get(id=id)
+        return render(request, "Producto/actualizar.html", {"productos": productos})
+    
+def borrarproducto(request, id):
+    productos = Producto.objects.filter(id=id)
+    productos.delete()
+    return redirect('/Producto/listado')
+
+#endregion
