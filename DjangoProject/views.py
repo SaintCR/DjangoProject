@@ -1,9 +1,65 @@
 from django.db import connection
 from django.shortcuts import redirect, render
 
+from DjangoProject.models import Cargo, Clientes
+
 
 def home(request):
     return render(request,'Home/home.html')
+
+#region CLIENTES
+
+def clienteinsertar(request):
+    if request.method == "POST":
+        print("Hacemos el guardado en la BD")
+        if request.POST.get('nombre') and request.POST.get('apellido') and request.POST.get('telefono') and request.POST.get('direccion') and request.POST.get('correoelectronico') and request.POST.get('cargoid'):
+            clientes = Clientes()
+            clientes.nombres = request.POST.get('nombre')
+            clientes.apellidos = request.POST.get('apellido')
+            clientes.telefono = request.POST.get('telefono')
+            clientes.direccion = request.POST.get('direccion')
+            clientes.correoelectronico = request.POST.get('correoelectronico')
+            clientes.cargo = Cargo.objects.get(id=request.POST.get('cargoid'))
+            clientes.save()
+            return redirect('/Clientes/listado')
+    else:
+        cargos = Cargo.objects.all()
+        return render(request, "Clientes/insertar.html",{"cargos":cargos})
+    
+def clientelistado(request):
+    clientes = Clientes.objects.all()
+    return render(request, 'Clientes/listar.html', {'clientes':clientes})
+
+def borrarcliente(request, idcliente):
+    cliente = Clientes.objects.filter(id=idcliente)
+    cliente.delete()
+    return redirect('/Clientes/listado')
+
+def clienteactualizar(request, idcliente):
+    if request.method == "POST":
+        nombre = request.POST.get('nombre')
+        apellido = request.POST.get('apellido')
+        telefono = request.POST.get('telefono')
+        direccion = request.POST.get('direccion')
+        correoelectronico = request.POST.get('correoelectronico')
+        cargoid = request.POST.get('cargoid')
+        
+        if nombre and apellido and telefono and direccion and correoelectronico and cargoid:
+            cliente = Clientes.objects.get(id=idcliente)
+            cliente.nombres = nombre
+            cliente.apellidos = apellido
+            cliente.telefono = telefono
+            cliente.direccion = direccion
+            cliente.correoelectronico = correoelectronico
+            cliente.cargo = Cargo.objects.get(id=cargoid)
+            cliente.save()
+            return redirect('/Clientes/listado')
+    else:
+        cliente = Clientes.objects.get(id=idcliente)
+        cargos = Cargo.objects.all()
+        return render(request, "Clientes/actualizar.html", {"cliente": cliente, "cargos": cargos})
+
+#endregion
 
 #region CARGO
 
@@ -45,3 +101,4 @@ def cargoactualizar(request,idcargo):
         return render(request, 'Cargo/actualizar.html',{"uncargo":uncargo})
 
 #endregion
+

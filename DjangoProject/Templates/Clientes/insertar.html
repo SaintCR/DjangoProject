@@ -1,0 +1,46 @@
+{% load static %}
+{% include 'Inc/header.html' %} 
+
+<div class="ui container">
+    <h1 class="centrartitulo">Formulario de cliente</h1> 
+    <form action="" method="post" class="ui form">
+        {% csrf_token %}
+        <div class="three fields">
+            <div class="four field">
+                <label for="">Nombres:</label>
+                <input type="text" name="nombre" id="nombre" required>
+            </div>
+            <div class="field">
+                <label for="">Apellidos:</label>
+                <input type="text" name="apellido" id="apellido" required>
+            </div>
+            <div class="field">
+                <label for="">Telefono:</label>
+                <input type="number" name="telefono" id="Telefono" required>
+            </div>
+        </div>
+        <div class="three fields">
+            <div class="field">
+                <label for="">Dirección</label>
+                <input type="text" name="direccion" id="direccion" required>
+            </div>
+            <div class="field">
+                <label for="">Correo Eléctronico</label>
+                <input type="email" name="correoelectronico" id="correoelectronico" required>
+            </div>
+            <div class="field">
+                <label for="select_valor">Seleccione un valor</label>
+                <select id="cargoid" name="cargoid">
+                    {% for c in cargos %}
+                    <option value="{{ c.id }}">{{ c.nombre }} - Decuento del: {{ c.descuento }}%</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="centrarboton">
+            <button type="submit" class="ui inverted green button">Guardar Cliente</button>  
+        </div>
+    </form>
+</div>
+
+{% include 'Inc/footer.html' %} 

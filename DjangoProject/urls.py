@@ -25,9 +25,17 @@ urlpatterns = [
     #HOME
     path('', views.home),
 
+    #CRUD CLIENTES
+    path('Clientes/insertar', views.clienteinsertar),
+    path('Clientes/listado', views.clientelistado),
+    path('Clientes/borrar/<int:idcliente>', views.borrarcliente),
+    path('Clientes/actualizar/<int:idcliente>', views.clienteactualizar),
+    #FIN CRUD CLIENTES
+
     #CRUD CARGO
     path('Cargo/insertar', views.cargoinsertar),
     path('Cargo/listado', views.cargolistado),
     path('Cargo/borrar/<int:idcargo>', views.cargoborrar),
     path('Cargo/actualizar/<int:idcargo>', views.cargoactualizar),
+    #FIN CRUD CARGO
 ]
