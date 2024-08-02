@@ -4,6 +4,7 @@
 
 <ul>
   <li><b>Lenguajes:</b> Python</li>
+  <li><b>Motor de Base de datos:</b> MySQL (Laragon y Xampp)</li>
   <li><b>Framework:</b> Django</li>
   <li><b>Librerias:</b> Semantic, Autenthicate, FileSystemStorage</li>
 </ul>
