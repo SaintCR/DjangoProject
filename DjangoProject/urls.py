@@ -50,4 +50,13 @@ urlpatterns = [
     #CRUD FACTURA
     path('Factura/insertar/', views.facturainsertar),
     #FIN CRUD FACTURA
+
+    #USUARIOS - LOGIN Y LOGOUT
+
+    path('Usuarios/insertar/', views.insertarusuario),
+    path('Usuarios/login/', views.loginusuarios),
+    path('Usuarios/logout', views.logoutusuarios, name='logoutusuarios'),
+    
+    #FIN USUARIOS
+
 ]

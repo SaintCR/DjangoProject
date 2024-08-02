@@ -1,0 +1,38 @@
+{% load static %}
+{% include 'Inc/header.html' %} 
+
+<div class="ui container">
+    <h1 class="centrartitulo">Formulario de insertar usuario</h1> 
+    <form action="" method="post" class="ui form">
+        {% csrf_token %}
+        <div class="three fields">
+            <div class="four field">
+                <label for="">Nombres:</label>
+                <input type="text" name="nombres" id="nombres" required>
+            </div>
+            <div class="field">
+                <label for="">Apellidos:</label>
+                <input type="text" name="apellidos" id="apellidos" required>
+            </div>
+            <div class="field">
+                <label for="">Nombre de Usuario:</label>
+                <input type="text" name="username" id="username" required>
+            </div>
+        </div>
+        <div class="two fields">
+            <div class="field">
+                <label for="">Correo eléctronico</label>
+                <input type="email" name="email" id="email" required>
+            </div>
+            <div class="field">
+                <label for="">Contraseña</label>
+                <input type="password" name="password" id="password" required>
+            </div>
+        </div>
+        <div class="centrarboton">
+            <button type="submit" class="ui inverted green button">Guardar Usuario</button>  
+        </div>
+    </form>
+</div>
+
+{% include 'Inc/footer.html' %} 

@@ -3,6 +3,9 @@ from django.shortcuts import redirect, render
 from django.core.serializers import serialize
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+
 
 
 from DjangoProject.models import Cargo, Clientes, Producto
@@ -171,5 +174,37 @@ def borrarproducto(request, id):
 def facturainsertar(request):
     productos = Producto.objects.all()
     return render(request, 'Factura/insertar.html', {'productos': productos})
+
+#endregion
+
+#region USUARIOS
+
+def insertarusuario(request):
+    if request.method == "POST":
+        if request.POST.get('nombres') and request.POST.get('apellidos') and request.POST.get('username') and request.POST.get('email') and request.POST.get('password'):
+            user = User.objects.create_user(request.POST.get('username'), request.POST.get('email'), request.POST.get('password'))
+            user.first_name = request.POST.get('nombres')
+            user.last_name = request.POST.get('apellidos')
+            user.save()
+            return redirect('/Usuarios/login')
+            
+    return render(request, 'Usuarios/insertar.html')
+
+def loginusuarios(request):
+    if request.method == "POST":
+        if request.POST.get('username') and request.POST.get('password'):
+            user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
+            if user is not None:
+                login(request,user)
+                return redirect('/')
+            else:
+                mensaje = "Usuario o Contraseña incorrectos, Intente de nuevo"
+                return render(request, 'Usuarios/login.html', {'mensaje':mensaje})
+    else:
+        return render(request, 'Usuarios/login.html')
+    
+def logoutusuarios(request):
+    logout(request)
+    return redirect('/Usuarios/login')
 
 #endregion
