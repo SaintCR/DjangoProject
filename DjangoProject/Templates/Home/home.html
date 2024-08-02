@@ -1,6 +1,13 @@
 {% load static %}
 {% include 'Inc/header.html' %} 
 
-<h1>Bienvenido al sistema de Django - Ficha 2697891</h1>
+{% if request.user.is_authenticated %}
+    <h1 class="centrartitulo">Hola! {{ user.first_name }}  {{ user.last_name }}</h1>
+    <h2 class="centrartitulo">Para empezar a navegar, seleccione alguna opción</h2>
+{% else %}
+    <h1 class="centrartitulo">Bienvenido!</h1>
+    <h2 class="centrartitulo">Para empezar a navegar, seleccione alguna opción</h2>
+
+{% endif %}
 
 {% include 'Inc/footer.html' %}
