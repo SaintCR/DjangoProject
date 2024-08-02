@@ -30,6 +30,7 @@ urlpatterns = [
     path('Clientes/listado', views.clientelistado),
     path('Clientes/borrar/<int:idcliente>', views.borrarcliente),
     path('Clientes/actualizar/<int:idcliente>', views.clienteactualizar),
+    path('Clientes/API/<str:email>', views.clienteAPI),
     #FIN CRUD CLIENTES
 
     #CRUD CARGO
@@ -45,4 +46,8 @@ urlpatterns = [
     path('Producto/actualizar/<int:id>', views.productoactualizar),
     path('Producto/borrar/<int:id>', views.borrarproducto),
     #FIN PRODUCTOS
+
+    #CRUD FACTURA
+    path('Factura/insertar/', views.facturainsertar),
+    #FIN CRUD FACTURA
 ]

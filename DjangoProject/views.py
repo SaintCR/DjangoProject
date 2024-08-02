@@ -62,6 +62,11 @@ def clienteactualizar(request, idcliente):
         cliente = Clientes.objects.get(id=idcliente)
         cargos = Cargo.objects.all()
         return render(request, "Clientes/actualizar.html", {"cliente": cliente, "cargos": cargos})
+    
+def clienteAPI(request, email):
+    cliente = Clientes.objects.filter(correoelectronico=email)
+    jsoncliente = serialize('json', cliente)
+    return HttpResponse(jsoncliente, content_type="application/json")
 
 #endregion
 
@@ -158,5 +163,13 @@ def borrarproducto(request, id):
     productos = Producto.objects.filter(id=id)
     productos.delete()
     return redirect('/Producto/listado')
+
+#endregion
+
+#region FACTURA
+
+def facturainsertar(request):
+    productos = Producto.objects.all()
+    return render(request, 'Factura/insertar.html', {'productos': productos})
 
 #endregion

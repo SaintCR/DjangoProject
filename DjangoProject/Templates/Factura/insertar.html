@@ -1,0 +1,133 @@
+{% load static %}
+{% include 'Inc/header.html' %} 
+
+<div class="ui container">
+    <h1 class="centrartitulo">Formulario de Factura</h1> 
+    <form action="" method="post" class="ui form">
+        <div class="three fields">
+            <div class="field">
+                <label for="">Correo eléctronico cliente:</label>
+                <input type="email" name="emailcliente" id="emailcliente" required>
+            </div>
+            <div class="field">
+                <label for=""style="color: white;">.</label>
+                <button onclick="consultarcliente();" type="button" class="ui inverted green button">Consultar Cliente</button>
+            </div>
+            <div class="field">
+                <label for="">Fecha Factura</label>
+                <input type="date" name="fachafactura" id="fechafactura">
+            </div>
+        </div>
+        <br>
+        <hr>
+        <div class="four fields">
+            <div class="field">
+                <h3 id="nombrecliente">Nombre Cliente:.....</h3>
+            </div>
+            <div class="field">
+                <h3 id="telefonocliente">Telefono Cliente.....</h3>
+            </div>
+            <div class="field">
+                <h3 id="direccioncliente">Dirección Cliente.....</h3>
+            </div>
+            <div class="field">
+                <h3 id="cargocliente">Cargo Cliente.....</h3>
+            </div>
+        </div>
+        <br>
+        <hr>
+        <br>
+        <div class="three fields">
+            <div class="field">
+                <label for="">Seleccione un producto</label>
+                <select name="producto_id" id="producto_id">
+                    {% for p in productos %}
+                        <option value="{{p.id}}">{{ p.nombre }} - {{ p.precio }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="field">
+                <label for="">Cantidad de productos</label>
+                <input type="number" name="cantidad" id="cantidad">
+            </div>
+            <div class="field">
+                <label for="" style="color: white;">.</label>
+                <button onclick="agregarproducto();" type="button" class="ui inverted green button">Agregar Prodcuto</button>
+            </div>
+        </div>
+        <br>
+        <hr>
+        <br>
+        <table class="ui basic table" id="tablafactura">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Nombre Producto</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Total Producto</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+    </form>
+</div>
+
+<script>
+
+    var c = 1
+
+    function consultarcliente() {
+        let emailcliente = document.getElementById("emailcliente").value;
+        let rutaAPI = "/Clientes/API/" + emailcliente;
+
+        fetch(rutaAPI)
+        .then(data => data.json())
+        .then(data => {
+            if(data.length ==0){
+                alert('No se encontró ningún correo, por favor escribalo bien')
+                document.getElementById("nombrecliente").innerHTML = "Nombre del cliente: ";
+                document.getElementById("telefonocliente").innerHTML = "Telefono del cliente: ";
+                document.getElementById("direccioncliente").innerHTML = "Dirección del cliente: ";
+                document.getElementById("cargocliente").innerHTML = "Cargo del cliente: ";
+    
+            }
+            else{
+            document.getElementById("nombrecliente").innerHTML = "Nombre del cliente: <br><br>"+ data[0].fields.nombres + " " + data [0].fields.apellidos;
+            document.getElementById("telefonocliente").innerHTML = "Telefono del cliente: <br><br>" + data[0].fields.telefono;
+            document.getElementById("direccioncliente").innerHTML = "Dirección del cliente: <br><br> " + data[0].fields.direccion;
+            document.getElementById("cargocliente").innerHTML = "Cargo del cliente: <br><br>" + data[0].fields.cargo;
+            }
+
+        })
+    }
+
+    function agregarproducto(){
+
+        var cantidadproducto = document.getElementById('cantidad').value;
+        var nombreproducto = $('#producto_id option:selected').text();
+        var idproducto = document.getElementById('producto_id').value;
+        var productocompleto = nombreproducto.split('-')
+        var total = productocompleto[1] * cantidadproducto;
+
+        $('#tablafactura tbody').append(`
+        <tr>
+            <td>${c}</td>
+            <td>${productocompleto[0]}</td>
+            <td>${productocompleto[1]}</td>
+            <td>${cantidadproducto}</td>
+            <td>${total}</td>
+            <td>
+                <a href="#"><i class="pencil alternate icon"></i></a>
+                <a href="#"><i class="trash icon"></i></a>
+            </td>
+        </tr>
+    `);
+
+        c = c + 1
+    }
+</script>
+
+{% include 'Inc/footer.html' %} 
