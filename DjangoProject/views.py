@@ -5,6 +5,7 @@ from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.contrib import messages
 
 
 
@@ -17,6 +18,8 @@ def home(request):
 #region CLIENTES
 
 def clienteinsertar(request):
+    if not request.user.is_authenticated:
+        return redirect("/Usuarios/login")
     if request.method == "POST":
         print("Hacemos el guardado en la BD")
         if request.POST.get('nombre') and request.POST.get('apellido') and request.POST.get('telefono') and request.POST.get('direccion') and request.POST.get('correoelectronico') and request.POST.get('cargoid'):
@@ -34,6 +37,8 @@ def clienteinsertar(request):
         return render(request, "Clientes/insertar.html",{"cargos":cargos})
     
 def clientelistado(request):
+    if not request.user.is_authenticated:
+        return redirect("/Usuarios/login")
     clientes = Clientes.objects.all()
     return render(request, 'Clientes/listar.html', {'clientes':clientes})
 
@@ -76,6 +81,8 @@ def clienteAPI(request, email):
 #region CARGO
 
 def cargoinsertar(request):
+    if not request.user.is_authenticated:
+        return redirect("/Usuarios/login")
     if request.method == "POST":
         if request.POST.get('nombre') and request.POST.get('descripcion') and request.POST.get('descuento'):
             insertar = connection.cursor()
@@ -89,6 +96,8 @@ def cargoinsertar(request):
         return render(request, "Cargo/insertar.html")
     
 def cargolistado(request):
+    if not request.user.is_authenticated:
+        return redirect("/Usuarios/login")
     cargos = connection.cursor()
     cargos.execute('call listadocargo()')
     return render(request, 'Cargo/listar.html',{'cargos':cargos})
@@ -117,6 +126,8 @@ def cargoactualizar(request,idcargo):
 #region PRODUCTOS
 
 def insertarproducto(request):
+    if not request.user.is_authenticated:
+        return redirect("/Usuarios/login")
     if request.method == "POST":
         if request.POST.get('nombre') and request.POST.get('descripcion') and request.POST.get('precio') and request.POST.get('cantidad'):
             productos = Producto()
@@ -132,6 +143,8 @@ def insertarproducto(request):
     return render(request, 'Producto/insertar.html')
 
 def listadoproducto(request):
+    if not request.user.is_authenticated:
+        return redirect("/Usuarios/login")
     productos= Producto.objects.all()
     return render(request, 'Producto/listar.html', {'productos': productos})
 
@@ -172,6 +185,8 @@ def borrarproducto(request, id):
 #region FACTURA
 
 def facturainsertar(request):
+    if not request.user.is_authenticated:
+        return redirect("/Usuarios/login")
     productos = Producto.objects.all()
     return render(request, 'Factura/insertar.html', {'productos': productos})
 
