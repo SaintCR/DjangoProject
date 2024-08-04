@@ -2,7 +2,7 @@
 {% include 'Inc/header.html' %} 
 
 <div class="ui container">
-    <h1 class="centrartitulo">Formulario de actualizar clientes</h1> 
+    <h1 class="centrartitulo">Actualizar Cliente: <i>{{ cliente.nombres }} {{ cliente.apellidos }}</i></h1> 
     <form action="" method="post" class="ui form">
         {% csrf_token %}
         <div class="three fields">

@@ -1,7 +1,7 @@
 {% include 'Inc/header.html' %} 
 
 <div class="ui container">
-    <h1 class="centrartitulo">Formulario de Actualizar Producto</h1> 
+    <h1 class="centrartitulo">Actualizar: <i>{{ productos.nombre }}</i></h1> 
     <form action="" method="post" class="ui form" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="two fields">
@@ -14,7 +14,7 @@
                 <input type="text" name="descripcion" id="descripcion" value="{{ productos.descripcion }}" required>
             </div>
         </div>
-        <div class="three fields">
+        <div class="two fields">
             <div class="field">
                 <label for="">Precio:</label>
                 <input type="number" name="precio" id="precio" value="{{ productos.precio }}" required>
@@ -23,9 +23,14 @@
                 <label for="">Cantidad del producto:</label>
                 <input type="number" name="cantidad" id="cantidad" value="{{ productos.cantidad }}" required>
             </div>
-            <div class="field">
-                <label for="">Foto del producto:</label>
-                <input type="file" name="foto_url" id="foto_url" required>
+        </div>
+        <br>
+        <div class="field">
+            <div class="ui center aligned grid">
+                <div class="column">
+                    <label for="foto_url">Cambiar Foto del producto (opcional):</label>
+                    <input type="file" name="foto_url" id="foto_url" style="text-align: center;">
+                </div>
             </div>
         </div>
          <div class="centrarboton">

@@ -162,6 +162,8 @@ def productoactualizar(request, id):
             productos.descripcion = descripcion
             productos.precio = precio
             productos.cantidad = cantidad
+            if 'foto_url' in request.FILES:
+                productos.foto_url = request.FILES['foto_url']
             
             if foto_url:
                 imagen = FileSystemStorage()
