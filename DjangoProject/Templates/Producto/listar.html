@@ -20,7 +20,7 @@
           <div class="extra content">
             <span class="right floated">
                 <a href="/Producto/actualizar/{{ p.id }}"><i class="edit icon"></i></a>
-                <a href="/Producto/borrar/{{ p.id }}"><i class="trash icon"></i></a>
+                <a href="javascript:void(0);" onclick="confirmDelete('{{ p.id }}')"><i class="trash icon"></i></a>
             </span>
             <span>
               <i class="dollar sign icon"></i>
@@ -30,3 +30,24 @@
         </div>
     {% endfor %}
 </div>
+
+<script>
+  function confirmDelete(id) {
+      Swal.fire({
+          title: '¿Estás seguro?',
+          text: "¡No podrás revertir esto!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'Sí, borrar',
+          cancelButtonText: 'Cancelar'
+      }).then((result) => {
+          if (result.isConfirmed) {
+              window.location.href = '/Producto/borrar/' + id;
+          }
+      })
+  }
+  </script>
+
+{% include 'Inc/footer.html' %}

@@ -20,7 +20,8 @@
                 <td>{{ c.3 }}%</td>
                 <td>
                     <a href="/Cargo/actualizar/{{ c.0 }}"><i class="pencil alternate icon"></i></a>
-                    <a href="/Cargo/borrar/{{ c.0 }}"><i class="trash icon"></i></a>
+                    <a href="javascript:void(0);" onclick="confirmDelete('{{ c.0 }}')"><i class="trash icon"></i></a>
+
                 </td>
             </tr>
             {% endfor %}
@@ -28,3 +29,23 @@
       </table>
 </div>
 
+<script>
+  function confirmDelete(id) {
+      Swal.fire({
+          title: '¿Estás seguro?',
+          text: "¡No podrás revertir esto!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'Sí, borrar',
+          cancelButtonText: 'Cancelar'
+      }).then((result) => {
+          if (result.isConfirmed) {
+              window.location.href = '/Cargo/borrar/' + id;
+          }
+      })
+  }
+  </script>
+
+{% include 'Inc/footer.html' %}
