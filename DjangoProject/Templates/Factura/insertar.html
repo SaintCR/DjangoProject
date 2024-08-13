@@ -52,7 +52,7 @@
             </div>
             <div class="field">
                 <label for="" style="color: white;">.</label>
-                <button onclick="agregarproducto();" type="button" class="ui inverted green button">Agregar Prodcuto</button>
+                <button onclick="agregarproducto();" type="button" class="ui inverted green button">Agregar Producto</button>
             </div>
         </div>
         <br>
@@ -65,13 +65,19 @@
                 <th>Nombre Producto</th>
                 <th>Precio</th>
                 <th>Cantidad</th>
-                <th>Total Producto</th>
+                <th>Total</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
             </tbody>
           </table>
+          <br> 
+          <hr>
+          <br>
+          <div class="field">
+              <h3 id="totalfactura">Total de la Factura: $0 </h3>
+          </div>
     </form>
 </div>
 
@@ -110,23 +116,44 @@
         var nombreproducto = $('#producto_id option:selected').text();
         var idproducto = document.getElementById('producto_id').value;
         var productocompleto = nombreproducto.split('-');
-        var total = productocompleto[1] * cantidadproducto;
 
-        $('#tablafactura').append("\
-        <tr id='fila"+idproducto+"'>\
-            <td>"+c+"</td>\
-            <td>"+productocompleto[0]+"</td>\
-            <td>"+productocompleto[1]+"</td>\
-            <td>"+cantidadproducto+"</td>\
-            <td>"+total+"</td>\
-            <td><i onclick='borrarproducto("+idproducto+")' class='trash icon'></id></td>\
-        </tr>");
-        c = c + 1
+        var objetofila = document.getElementById("fila"+idproducto);
+
+        if (objetofila == null) {
+            var total = productocompleto[1] * cantidadproducto;
+            totalfactura = totalfactura + total;
+
+            document.getElementById("totalfactura").innerHTML = "Total de la Factura: $" +totalfactura + "<br><br><br>" ;
+
+            $('#tablafactura').append("\
+            <tr id='fila"+idproducto+"'>\
+                <td>"+c+"</td>\
+                <td>"+productocompleto[0]+"</td>\
+                <td>"+productocompleto[1]+"</td>\
+                <td id='cantidadproducto"+idproducto+"'>"+cantidadproducto+"</td>\
+                <td id='totalproducto"+idproducto+"'>"+total+"</td>\
+                <td class='acciones' style='cursor: pointer;' >\
+                    <i onclick='borrarproducto(" + idproducto + ", " + total + ")' class='trash icon'></i>\
+                    <i onclick='actualizarcantidad(" + idproducto + ", -1)' class='minus icon'></i>\
+                    <i onclick='actualizarcantidad(" + idproducto + ", 1)' class='plus icon'></i>\
+                </td>\
+            </tr>");
+            c = c + 1
+        } 
+        else {
+            var cantidadactual = document.getElementById('cantidadproducto'+idproducto).textContent;
+            cantidadactual = parseInt(cantidadactual) + parseInt(cantidadproducto);
+            total = parseInt(cantidadactual) * parseInt(productocompleto[1]);
+            document.getElementById('cantidadproducto'+idproducto).innerHTML = cantidadactual;
+            document.getElementById('totalproducto'+idproducto).innerHTML = total;
+        }
     }
 
-    function borrarproducto(idproducto) {
+    function borrarproducto(idproducto, total) {
         $("#fila"+idproducto).remove();
-    }
+        totalfactura = totalfactura - total;
+        document.getElementById("totalfactura").innerHTML = "Total de la Factura: $" + totalfactura;
+        }
 
 </script>
 
