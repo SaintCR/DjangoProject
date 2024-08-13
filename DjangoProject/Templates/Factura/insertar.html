@@ -78,6 +78,7 @@
 <script>
 
     var c = 1
+    totalfactura = 0
 
     function consultarcliente() {
         let emailcliente = document.getElementById("emailcliente").value;
@@ -105,29 +106,28 @@
     }
 
     function agregarproducto(){
-
         var cantidadproducto = document.getElementById('cantidad').value;
         var nombreproducto = $('#producto_id option:selected').text();
         var idproducto = document.getElementById('producto_id').value;
-        var productocompleto = nombreproducto.split('-')
+        var productocompleto = nombreproducto.split('-');
         var total = productocompleto[1] * cantidadproducto;
 
-        $('#tablafactura tbody').append(`
-        <tr>
-            <td>${c}</td>
-            <td>${productocompleto[0]}</td>
-            <td>${productocompleto[1]}</td>
-            <td>${cantidadproducto}</td>
-            <td>${total}</td>
-            <td>
-                <a href="#"><i class="pencil alternate icon"></i></a>
-                <a href="#"><i class="trash icon"></i></a>
-            </td>
-        </tr>
-    `);
-
+        $('#tablafactura').append("\
+        <tr id='fila"+idproducto+"'>\
+            <td>"+c+"</td>\
+            <td>"+productocompleto[0]+"</td>\
+            <td>"+productocompleto[1]+"</td>\
+            <td>"+cantidadproducto+"</td>\
+            <td>"+total+"</td>\
+            <td><i onclick='borrarproducto("+idproducto+")' class='trash icon'></id></td>\
+        </tr>");
         c = c + 1
     }
+
+    function borrarproducto(idproducto) {
+        $("#fila"+idproducto).remove();
+    }
+
 </script>
 
 {% include 'Inc/footer.html' %} 
