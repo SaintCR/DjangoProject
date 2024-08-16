@@ -82,78 +82,103 @@
 </div>
 
 <script>
+var c = 1;
+var totalfactura = 0;
 
-    var c = 1
-    totalfactura = 0
+function consultarcliente() {
+    let emailcliente = document.getElementById("emailcliente").value;
+    let rutaAPI = "/Clientes/API/" + emailcliente;
 
-    function consultarcliente() {
-        let emailcliente = document.getElementById("emailcliente").value;
-        let rutaAPI = "/Clientes/API/" + emailcliente;
-
-        fetch(rutaAPI)
+    fetch(rutaAPI)
         .then(data => data.json())
         .then(data => {
-            if(data.length ==0){
-                alert('No se encontró ningún correo, por favor escribalo bien')
+            if (data.length == 0) {
+                alert('No se encontró ningún correo, por favor escríbalo bien');
                 document.getElementById("nombrecliente").innerHTML = "Nombre del cliente: ";
-                document.getElementById("telefonocliente").innerHTML = "Telefono del cliente: ";
+                document.getElementById("telefonocliente").innerHTML = "Teléfono del cliente: ";
                 document.getElementById("direccioncliente").innerHTML = "Dirección del cliente: ";
                 document.getElementById("cargocliente").innerHTML = "Cargo del cliente: ";
-    
+            } else {
+                document.getElementById("nombrecliente").innerHTML = "Nombre del cliente: <br><br>" + data[0].fields.nombres + " " + data[0].fields.apellidos;
+                document.getElementById("telefonocliente").innerHTML = "Teléfono del cliente: <br><br>" + data[0].fields.telefono;
+                document.getElementById("direccioncliente").innerHTML = "Dirección del cliente: <br><br> " + data[0].fields.direccion;
+                document.getElementById("cargocliente").innerHTML = "Cargo del cliente: <br><br>" + data[0].fields.cargo;
             }
-            else{
-            document.getElementById("nombrecliente").innerHTML = "Nombre del cliente: <br><br>"+ data[0].fields.nombres + " " + data [0].fields.apellidos;
-            document.getElementById("telefonocliente").innerHTML = "Telefono del cliente: <br><br>" + data[0].fields.telefono;
-            document.getElementById("direccioncliente").innerHTML = "Dirección del cliente: <br><br> " + data[0].fields.direccion;
-            document.getElementById("cargocliente").innerHTML = "Cargo del cliente: <br><br>" + data[0].fields.cargo;
-            }
+        });
+}
 
-        })
-    }
+function agregarproducto() {
+    var cantidadproducto = parseInt(document.getElementById('cantidad').value);
+    var nombreproducto = $('#producto_id option:selected').text();
+    var idproducto = document.getElementById('producto_id').value;
+    var productocompleto = nombreproducto.split('-');
+    var precio = parseInt(productocompleto[1]); // Redondear a entero
+    var totalProducto = precio * cantidadproducto;
 
-    function agregarproducto(){
-        var cantidadproducto = document.getElementById('cantidad').value;
-        var nombreproducto = $('#producto_id option:selected').text();
-        var idproducto = document.getElementById('producto_id').value;
-        var productocompleto = nombreproducto.split('-');
+    var objetofila = document.getElementById("fila" + idproducto);
 
-        var objetofila = document.getElementById("fila"+idproducto);
+    if (objetofila == null) {
+        totalfactura += totalProducto;
 
-        if (objetofila == null) {
-            var total = productocompleto[1] * cantidadproducto;
-            totalfactura = totalfactura + total;
-
-            document.getElementById("totalfactura").innerHTML = "Total de la Factura: $" +totalfactura + "<br><br><br>" ;
-
-            $('#tablafactura').append("\
-            <tr id='fila"+idproducto+"'>\
-                <td>"+c+"</td>\
-                <td>"+productocompleto[0]+"</td>\
-                <td>"+productocompleto[1]+"</td>\
-                <td id='cantidadproducto"+idproducto+"'>"+cantidadproducto+"</td>\
-                <td id='totalproducto"+idproducto+"'>"+total+"</td>\
-                <td class='acciones' style='cursor: pointer;' >\
-                    <i onclick='borrarproducto(" + idproducto + ", " + total + ")' class='trash icon'></i>\
+        $('#tablafactura').append("\
+            <tr id='fila" + idproducto + "'>\
+                <td>" + c + "</td>\
+                <td>" + productocompleto[0] + "</td>\
+                <td>" + precio + "</td>\
+                <td id='cantidadproducto" + idproducto + "'>" + cantidadproducto + "</td>\
+                <td id='totalproducto" + idproducto + "'>" + totalProducto + "</td>\
+                <td class='acciones' style='cursor: pointer;'>\
+                    <i onclick='borrarproducto(" + idproducto + ")' class='trash icon'></i>\
                     <i onclick='actualizarcantidad(" + idproducto + ", -1)' class='minus icon'></i>\
                     <i onclick='actualizarcantidad(" + idproducto + ", 1)' class='plus icon'></i>\
                 </td>\
             </tr>");
-            c = c + 1
-        } 
-        else {
-            var cantidadactual = document.getElementById('cantidadproducto'+idproducto).textContent;
-            cantidadactual = parseInt(cantidadactual) + parseInt(cantidadproducto);
-            total = parseInt(cantidadactual) * parseInt(productocompleto[1]);
-            document.getElementById('cantidadproducto'+idproducto).innerHTML = cantidadactual;
-            document.getElementById('totalproducto'+idproducto).innerHTML = total;
-        }
+        c++;
+    } else {
+        var cantidadactual = parseInt(document.getElementById('cantidadproducto' + idproducto).textContent);
+        totalfactura -= parseInt(document.getElementById('totalproducto' + idproducto).textContent);
+        cantidadactual += cantidadproducto;
+        totalProducto = cantidadactual * precio;
+        document.getElementById('cantidadproducto' + idproducto).innerHTML = cantidadactual;
+        document.getElementById('totalproducto' + idproducto).innerHTML = totalProducto;
+        totalfactura += totalProducto;
     }
 
-    function borrarproducto(idproducto, total) {
-        $("#fila"+idproducto).remove();
-        totalfactura = totalfactura - total;
-        document.getElementById("totalfactura").innerHTML = "Total de la Factura: $" + totalfactura;
-        }
+    document.getElementById("totalfactura").innerHTML = "Total de la Factura: $" + Math.round(totalfactura);
+}
+
+function borrarproducto(idproducto) {
+    var cantidadproductoElem = document.getElementById('cantidadproducto' + idproducto);
+    var cantidadactual = parseInt(cantidadproductoElem.textContent);
+    var totalProducto = parseInt(document.getElementById('totalproducto' + idproducto).textContent);
+
+    totalfactura -= totalProducto;
+
+    $("#fila" + idproducto).remove();
+
+    document.getElementById("totalfactura").innerHTML = "Total de la Factura: $" + Math.round(totalfactura);
+}
+
+function actualizarcantidad(idproducto, cambio) {
+    var cantidadproductoElem = document.getElementById('cantidadproducto' + idproducto);
+    var cantidadactual = parseInt(cantidadproductoElem.textContent);
+    var precio = parseInt($('#producto_id option[value="' + idproducto + '"]').text().split('-')[1]);
+
+    cantidadactual += cambio;
+    if (cantidadactual < 1) {
+        cantidadactual = 1; // Evitar cantidades menores a 1
+    }
+
+    var totalProducto = cantidadactual * precio;
+    var totalFila = parseInt(document.getElementById('totalproducto' + idproducto).textContent);
+
+    totalfactura -= totalFila;
+    document.getElementById('cantidadproducto' + idproducto).innerHTML = cantidadactual;
+    document.getElementById('totalproducto' + idproducto).innerHTML = totalProducto;
+    totalfactura += totalProducto;
+
+    document.getElementById("totalfactura").innerHTML = "Total de la Factura: $" + Math.round(totalfactura) + "<br><br><br>";
+}
 
 </script>
 
