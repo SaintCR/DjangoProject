@@ -177,8 +177,9 @@ function actualizarcantidad(idproducto, cambio) {
     document.getElementById('totalproducto' + idproducto).innerHTML = totalProducto;
     totalfactura += totalProducto;
 
-    document.getElementById("totalfactura").innerHTML = "Total de la Factura: $" + Math.round(totalfactura) + "<br><br><br>";
+    document.getElementById("totalfactura").innerHTML = "Total de la Factura: $" + Math.round(totalfactura);
 }
+
 
 </script>
 
