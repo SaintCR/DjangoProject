@@ -39,5 +39,6 @@ class Factura(models.Model):
 class FacturaHasProducto(models.Model):
     cantidad = models.BigIntegerField()
     factura = models.ForeignKey(Factura, on_delete=models.CASCADE)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE, null=True)
     class Meta:
         db_table = 'facturahasproducto'

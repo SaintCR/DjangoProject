@@ -197,6 +197,24 @@ def facturainsertar(request):
             factura.total = request.POST.get('totalfacturainput')
             factura.cliente = Clientes.objects.get(id=request.POST.get('idcliente'))
             factura.save()
+            consulta = connection.cursor()
+            consulta.execute("call consultarultimafactura()")
+            
+            idfacturamax = 0
+
+            for c in consulta:
+                idfacturamax = c[0]
+            arraycantidadproducto = request.POST.getlist('cantidadproductoinput[]')
+            arrayidproducto = request.POST.getlist('idproductoinput[]')
+
+            for s  in range(0, len(arrayidproducto),1):
+                facturahasproducto = FacturaHasProducto()
+                facturahasproducto.cantidad = arraycantidadproducto[s]
+                facturahasproducto.factura = Factura.objects.get(id=idfacturamax)
+                facturahasproducto.producto = Producto.objects.get(id=arrayidproducto[s])
+                facturahasproducto.save()
+                return redirect('/Factura/listado')
+
     else:
         productos = Producto.objects.all()
         return render(request, 'Factura/insertar.html', {'productos': productos})
