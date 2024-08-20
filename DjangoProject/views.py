@@ -9,7 +9,7 @@ from django.contrib import messages
 
 
 
-from DjangoProject.models import Cargo, Clientes, Producto
+from DjangoProject.models import Cargo, Clientes, Producto, Factura, FacturaHasProducto
 
 
 def home(request):
@@ -189,8 +189,17 @@ def borrarproducto(request, id):
 def facturainsertar(request):
     if not request.user.is_authenticated:
         return redirect("/Usuarios/login")
-    productos = Producto.objects.all()
-    return render(request, 'Factura/insertar.html', {'productos': productos})
+    
+    if request.method == "POST":
+        if request.POST.get('idcliente') and request.POST.get('fechafactura') and request.POST.get('idproductoinput[]') and request.POST.get('cantidadproductoinput[]') and request.POST.get('totalfacturainput'):
+            factura = Factura()
+            factura.fecha = request.POST.get('fechafactura')
+            factura.total = request.POST.get('totalfacturainput')
+            factura.cliente = Clientes.objects.get(id=request.POST.get('idcliente'))
+            factura.save()
+    else:
+        productos = Producto.objects.all()
+        return render(request, 'Factura/insertar.html', {'productos': productos})
 
 #endregion
 

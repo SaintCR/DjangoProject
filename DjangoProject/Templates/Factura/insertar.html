@@ -4,10 +4,12 @@
 <div class="ui container">
     <h1 class="centrartitulo">Formulario de Factura</h1> 
     <form action="" method="post" class="ui form">
+        {% csrf_token %}
         <div class="three fields">
             <div class="field">
                 <label for="">Correo eléctronico cliente:</label>
                 <input type="email" name="emailcliente" id="emailcliente" required>
+                <input type="hidden" name="idcliente" id="idcliente">
             </div>
             <div class="field">
                 <label for=""style="color: white;">.</label>
@@ -15,7 +17,7 @@
             </div>
             <div class="field">
                 <label for="">Fecha Factura</label>
-                <input type="date" name="fachafactura" id="fechafactura">
+                <input type="date" name="fechafactura" id="fechafactura">
             </div>
         </div>
         <br>
@@ -77,7 +79,15 @@
           <br>
           <div class="field">
               <h3 id="totalfactura">Total de la Factura: $0 </h3>
+              <input type="hidden" name="totalfacturainput" id="totalfacturainput">
           </div>
+
+        <br><br><br>
+        <div class="centrarboton">
+            <button type="submit" class="ui inverted green button">Guardar Factura</button>
+        </div>
+
+        <br><br><br><br><br>
     </form>
 </div>
 
@@ -103,6 +113,7 @@ function consultarcliente() {
                 document.getElementById("telefonocliente").innerHTML = "Teléfono del cliente: <br><br>" + data[0].fields.telefono;
                 document.getElementById("direccioncliente").innerHTML = "Dirección del cliente: <br><br> " + data[0].fields.direccion;
                 document.getElementById("cargocliente").innerHTML = "Cargo del cliente: <br><br>" + data[0].fields.cargo;
+                document.getElementById("idcliente").value = data[0].pk;
             }
         });
 }
@@ -112,20 +123,22 @@ function agregarproducto() {
     var nombreproducto = $('#producto_id option:selected').text();
     var idproducto = document.getElementById('producto_id').value;
     var productocompleto = nombreproducto.split('-');
-    var precio = parseInt(productocompleto[1]); // Redondear a entero
+    var precio = parseInt(productocompleto[1]);
     var totalProducto = precio * cantidadproducto;
 
     var objetofila = document.getElementById("fila" + idproducto);
 
     if (objetofila == null) {
         totalfactura += totalProducto;
+        document.getElementById("totalfacturainput").value = totalfactura;
 
         $('#tablafactura').append("\
             <tr id='fila" + idproducto + "'>\
-                <td>" + c + "</td>\
+                <td><input type='hidden' name='idproductoinput[]' value='"+idproducto+"'>"+c+"</td>\
                 <td>" + productocompleto[0] + "</td>\
+                <td>" + productocompleto[1] + "</td>\
                 <td>" + precio + "</td>\
-                <td id='cantidadproducto" + idproducto + "'>" + cantidadproducto + "</td>\
+                <td id='cantidadproducto" + idproducto + "'>" + cantidadproducto + "</td><input type='hidden' name='cantidadproductoinput[]' id='cantidadproductoinput"+idproducto+"' value='"+cantidadproducto+"'>\
                 <td id='totalproducto" + idproducto + "'>" + totalProducto + "</td>\
                 <td class='acciones' style='cursor: pointer;'>\
                     <i onclick='borrarproducto(" + idproducto + ")' class='trash icon'></i>\
@@ -141,10 +154,14 @@ function agregarproducto() {
         totalProducto = cantidadactual * precio;
         document.getElementById('cantidadproducto' + idproducto).innerHTML = cantidadactual;
         document.getElementById('totalproducto' + idproducto).innerHTML = totalProducto;
+        document.getElementById('cantidadproductoinput'+idproducto).value =  cantidadactual;
         totalfactura += totalProducto;
     }
 
     document.getElementById("totalfactura").innerHTML = "Total de la Factura: $" + Math.round(totalfactura);
+    document.getElementById("totalfacturainput").value = totalfactura;
+
+    
 }
 
 function borrarproducto(idproducto) {

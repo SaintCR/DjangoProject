@@ -24,4 +24,20 @@ class Producto(models.Model):
     cantidad = models.BigIntegerField()
     foto_url = models.CharField(max_length=255)
     class Meta:
-        db_table = 'producto'  
+        db_table = 'producto'
+
+
+class Factura(models.Model):
+    fecha = models.CharField(max_length=30)
+    total = models.BigIntegerField()
+    cliente = models.ForeignKey(Clientes, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'factura'
+
+
+class FacturaHasProducto(models.Model):
+    cantidad = models.BigIntegerField()
+    factura = models.ForeignKey(Factura, on_delete=models.CASCADE)
+    class Meta:
+        db_table = 'facturahasproducto'
