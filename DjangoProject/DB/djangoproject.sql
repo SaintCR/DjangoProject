@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 02-08-2024 a las 23:49:25
+-- Tiempo de generación: 20-08-2024 a las 22:56:04
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.1.10
 
@@ -33,6 +33,10 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `borrarcargo` (IN `idcargo` INT(11))
 
 DELETE FROM cargo WHERE id=idcargo;
 
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `consultarultimafactura` ()   BEGIN
+SELECT MAX(id) FROM factura;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `consultaruncargo` (IN `idcargo` INT(11))   BEGIN
@@ -159,7 +163,7 @@ CREATE TABLE `auth_user` (
 
 INSERT INTO `auth_user` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `email`, `is_staff`, `is_active`, `date_joined`) VALUES
 (1, 'pbkdf2_sha256$260000$NWGBy9IQ8lvmclf1l4qboX$vgxOic4hNda3xk883vJXYRf4ofyKYOh8gM9zpVXVlwc=', '2024-07-16 11:48:26.054154', 0, 'Samuel00', 'Samuel', 'Saldarriaga', 'samuelsaldarriaga0510@gmail.com', 0, 1, '2024-07-16 11:48:05.129508'),
-(2, 'pbkdf2_sha256$600000$KxXvvSKkWm4PGUQfkz2gwn$Jl0KK7n7EBloFj04EyVNQ4VQo8RaO9+X4RIx9Py/V1Q=', '2024-08-02 23:48:56.307869', 0, 'Shawty', 'Samuel', 'Saldarriaga', 'samuelsaldarriagaramirez@outlook.es', 0, 1, '2024-08-02 23:48:45.436070');
+(2, 'pbkdf2_sha256$600000$KxXvvSKkWm4PGUQfkz2gwn$Jl0KK7n7EBloFj04EyVNQ4VQo8RaO9+X4RIx9Py/V1Q=', '2024-08-20 13:33:44.809313', 0, 'Shawty', 'Samuel', 'Saldarriaga', 'samuelsaldarriagaramirez@outlook.es', 0, 1, '2024-08-02 23:48:45.436070');
 
 -- --------------------------------------------------------
 
@@ -203,9 +207,8 @@ CREATE TABLE `cargo` (
 --
 
 INSERT INTO `cargo` (`id`, `nombre`, `descripcion`, `descuento`) VALUES
-(1, 'Gerente', 'Dueño de la empresa', 10),
-(2, 'Vendedor', 'Vendedor de la empresa', 20),
-(3, 'Vigilante', 'Vigilante de la empresa', 40);
+(1, 'Dueño', 'Dueño de la empresa', 10),
+(2, 'Vendedor', 'Vendedor de la empresa', 20);
 
 -- --------------------------------------------------------
 
@@ -228,8 +231,8 @@ CREATE TABLE `clientes` (
 --
 
 INSERT INTO `clientes` (`id`, `nombres`, `apellidos`, `telefono`, `direccion`, `correoelectronico`, `cargo_id`) VALUES
-(1, 'Tomas', 'Ramirez', '231312', 'tttttt', 'tomas@gmail.com', 2),
-(2, '2342', '3r224', '23423', '3423', '2312@gmail.com', 3);
+(3, 'Samuel ', 'Saldarriaga', '123456789', 'Cra SENA', 'samuelsaldarriaga0510@gmail.com', 1),
+(4, 'Michael', 'Jordan ', '987654321', 'Bulls Chicago', 'jordan@gmail.com', 1);
 
 -- --------------------------------------------------------
 
@@ -329,8 +332,13 @@ CREATE TABLE `django_session` (
 --
 
 INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
+('3dskujyl7kvlzgl5aomlraexpccqzbn2', '.eJxVjMsOwiAURP-FtSHIG5fu-w3kXi6VqoGktCvjvytJF7qbzDkzLxZh30rce17jQuzCJDv9dgjpkesAdId6azy1uq0L8qHwg3Y-NcrP6-H-HRToZayTk145E8hnbeEbhSNr_ZmClFIIg45mSkFokwmVmLVXqClr58Cg1-z9AcfVN1g:1sgOzY:La0GIMMCyyT9KcdZEPK8_J8fAjGInRBmhVELvhhbaQs', '2024-09-03 13:33:44.827359'),
+('56a2pzzzk77nfvg8i7ev916gyj1fj19i', '.eJxVjMsOwiAURP-FtSHIG5fu-w3kXi6VqoGktCvjvytJF7qbzDkzLxZh30rce17jQuzCJDv9dgjpkesAdId6azy1uq0L8qHwg3Y-NcrP6-H-HRToZayTk145E8hnbeEbhSNr_ZmClFIIg45mSkFokwmVmLVXqClr58Cg1-z9AcfVN1g:1sahGR:8_2T6Yo9bjjdOyKSAT20OoBH6-m0UpT-Ef3agg9p998', '2024-08-18 19:51:35.705074'),
+('lvhmci3natrma4z7ump0yg02itmd2v76', '.eJxVjMsOwiAURP-FtSHIG5fu-w3kXi6VqoGktCvjvytJF7qbzDkzLxZh30rce17jQuzCJDv9dgjpkesAdId6azy1uq0L8qHwg3Y-NcrP6-H-HRToZayTk145E8hnbeEbhSNr_ZmClFIIg45mSkFokwmVmLVXqClr58Cg1-z9AcfVN1g:1sahZh:tNd3KMSJUs1rt3porjOJ9hFSqGjWso-G0MTFXQPtTc0', '2024-08-18 20:11:29.754767'),
+('mr57rjz4sga1zkbxdbkzyp3yh3ley10g', '.eJxVjMsOwiAURP-FtSHIG5fu-w3kXi6VqoGktCvjvytJF7qbzDkzLxZh30rce17jQuzCJDv9dgjpkesAdId6azy1uq0L8qHwg3Y-NcrP6-H-HRToZayTk145E8hnbeEbhSNr_ZmClFIIg45mSkFokwmVmLVXqClr58Cg1-z9AcfVN1g:1sgN7h:O30JfjwCEItuoIKIekKa6ImfZl6mKjLv_wfDG7IeRp4', '2024-09-03 11:34:01.016806'),
+('qz2ajfjzsn3h881mv6gx8uf6ick6tckf', '.eJxVjMsOwiAURP-FtSHIG5fu-w3kXi6VqoGktCvjvytJF7qbzDkzLxZh30rce17jQuzCJDv9dgjpkesAdId6azy1uq0L8qHwg3Y-NcrP6-H-HRToZayTk145E8hnbeEbhSNr_ZmClFIIg45mSkFokwmVmLVXqClr58Cg1-z9AcfVN1g:1sevMs:H98vyof4FKoLFz2kUXQ0VSMns-d1YbAu23EuTMWIrSk', '2024-08-30 11:43:42.442386'),
 ('sjt5t75vexm0mxn4ioyecixfbstcnqp4', '.eJxVjDsOwjAQBe_iGln-rH-U9JzB8sZrHEC2FCcV4u4QKQW0b2bei8W0rTVug5Y4Z3Zmkp1-N0zTg9oO8j21W-dTb-syI98VftDBrz3T83K4fwc1jfqtsUAWgrIFp0BJGRSZhE4rBwpAa1IBoJRiKPggPAIShiKsScJ6nz17fwDGbzci:1sTgfS:4i84ju6AOflHMTf6cFXkzm6_JIrEXLngKCqpDFI7Klw', '2024-07-30 11:48:26.064154'),
-('z68g6cqka5tycyx6hw93kxr5u87aamnz', '.eJxVjMsOwiAURP-FtSHIG5fu-w3kXi6VqoGktCvjvytJF7qbzDkzLxZh30rce17jQuzCJDv9dgjpkesAdId6azy1uq0L8qHwg3Y-NcrP6-H-HRToZayTk145E8hnbeEbhSNr_ZmClFIIg45mSkFokwmVmLVXqClr58Cg1-z9AcfVN1g:1sa212:Rs3MWKzA4dyxzAKcakNWozOKzekZRdI3Hs0XWf3hAXU', '2024-08-16 23:48:56.316938');
+('wlrufjxubl1p2vc5m27yyagde0cot94q', '.eJxVjMsOwiAURP-FtSHIG5fu-w3kXi6VqoGktCvjvytJF7qbzDkzLxZh30rce17jQuzCJDv9dgjpkesAdId6azy1uq0L8qHwg3Y-NcrP6-H-HRToZayTk145E8hnbeEbhSNr_ZmClFIIg45mSkFokwmVmLVXqClr58Cg1-z9AcfVN1g:1sdppI:cueKlLDsoVxh_CCYAbjLXYs6Ryb-RX4BRZTYCI5PTWs', '2024-08-27 11:36:32.940470');
 
 -- --------------------------------------------------------
 
@@ -340,10 +348,27 @@ INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALU
 
 CREATE TABLE `factura` (
   `id` int NOT NULL,
-  `fecha` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
+  `fecha` date NOT NULL,
   `total` double NOT NULL,
   `cliente_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `factura`
+--
+
+INSERT INTO `factura` (`id`, `fecha`, `total`, `cliente_id`) VALUES
+(1, '2024-08-20', 100000, 3),
+(2, '2024-08-18', 40000, 4),
+(3, '2024-08-20', 60000, 3),
+(4, '2024-08-20', 20000, 4),
+(5, '2024-08-20', 120000, 3),
+(6, '2024-08-20', 220000, 4),
+(7, '2024-08-20', 70000, 4),
+(8, '2009-02-10', 50000, 3),
+(9, '2024-08-20', 80000, 3),
+(10, '2024-02-03', 30000, 3),
+(11, '2024-08-22', 10001, 4);
 
 -- --------------------------------------------------------
 
@@ -357,6 +382,13 @@ CREATE TABLE `facturahasproducto` (
   `factura_id` int NOT NULL,
   `producto_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `facturahasproducto`
+--
+
+INSERT INTO `facturahasproducto` (`id`, `cantidad`, `factura_id`, `producto_id`) VALUES
+(1, 1, 11, 5);
 
 -- --------------------------------------------------------
 
@@ -378,8 +410,9 @@ CREATE TABLE `producto` (
 --
 
 INSERT INTO `producto` (`id`, `nombre`, `descripcion`, `precio`, `cantidad`, `foto_url`) VALUES
-(2, 'sticker', 'de un man', 1, 1, 'Captura de pantalla 2024-04-25 140340.png'),
-(3, 'llalalal', 'hshshs', 1000, 3, 'Captura de pantalla 2024-04-30 125608.png');
+(5, 'a', 'a', 1, 5, 'panes.jpg'),
+(6, 'Album Nacional', 'Album del mejor quipo de Colombia', 20000, 3, 'Screenshot 2024-08-06 at 15-44-13 Instagram.png'),
+(7, 'Cartuchera', 'Objeto para guardar otros objetos', 10000, 10000, 'cartuchera.jpg');
 
 --
 -- Índices para tablas volcadas
@@ -542,7 +575,7 @@ ALTER TABLE `cargo`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `django_admin_log`
@@ -566,19 +599,19 @@ ALTER TABLE `django_migrations`
 -- AUTO_INCREMENT de la tabla `factura`
 --
 ALTER TABLE `factura`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `facturahasproducto`
 --
 ALTER TABLE `facturahasproducto`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Restricciones para tablas volcadas
