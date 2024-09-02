@@ -9,7 +9,7 @@ from django.contrib import messages
 
 
 
-from DjangoProject.models import Cargo, Clientes, Producto, Factura, FacturaHasProducto
+from .models import Cargo, Clientes, Producto, Factura, FacturaHasProducto
 
 
 def home(request):
@@ -191,33 +191,39 @@ def facturainsertar(request):
         return redirect("/Usuarios/login")
     
     if request.method == "POST":
-        if request.POST.get('idcliente') and request.POST.get('fechafactura') and request.POST.get('idproductoinput[]') and request.POST.get('cantidadproductoinput[]') and request.POST.get('totalfacturainput'):
+        if (request.POST.get('idcliente') and request.POST.get('fechafactura') 
+            and request.POST.get('idproductoinput[]') and request.POST.get('cantidadproductoinput[]') 
+            and request.POST.get('totalfacturainput')):
+            
             factura = Factura()
             factura.fecha = request.POST.get('fechafactura')
             factura.total = request.POST.get('totalfacturainput')
             factura.cliente = Clientes.objects.get(id=request.POST.get('idcliente'))
             factura.save()
+            
             consulta = connection.cursor()
             consulta.execute("call consultarultimafactura()")
             
             idfacturamax = 0
-
             for c in consulta:
                 idfacturamax = c[0]
+                
             arraycantidadproducto = request.POST.getlist('cantidadproductoinput[]')
             arrayidproducto = request.POST.getlist('idproductoinput[]')
 
-            for s  in range(0, len(arrayidproducto),1):
+            for s in range(len(arrayidproducto)):
                 facturahasproducto = FacturaHasProducto()
                 facturahasproducto.cantidad = arraycantidadproducto[s]
                 facturahasproducto.factura = Factura.objects.get(id=idfacturamax)
                 facturahasproducto.producto = Producto.objects.get(id=arrayidproducto[s])
                 facturahasproducto.save()
-                return redirect('/Factura/listado')
+            
+            return redirect('/Factura/listado')
 
     else:
         productos = Producto.objects.all()
         return render(request, 'Factura/insertar.html', {'productos': productos})
+
 
 #endregion
 
